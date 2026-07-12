@@ -34,8 +34,15 @@ test('alternative waits', async ({ page }) => {
     // wait for network calls to be completed ('NOT RECOMMENDED')
     await page.waitForLoadState('networkidle')
 
-    await page.waitForTimeout(2000)
+    //await page.waitForTimeout(2000)
 
     const text = await successButton.allTextContents()
     expect(text).toContain('Data loaded with AJAX get request.')
+})
+
+test('timeouts', async ({ page }) => {
+    // test.setTimeout(10000)
+    test.slow()
+    const successButton = page.locator('.bg-success')
+    await successButton.click()
 })
