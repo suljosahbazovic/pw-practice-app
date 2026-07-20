@@ -1,3 +1,4 @@
+import { ExpansionCase } from '@angular/compiler'
 import { test, expect } from '@playwright/test'
 
 test.beforeEach(async ({ page }) => {
@@ -164,4 +165,31 @@ test('web tables', async({page}) => {
             //expect(cellValue).toEqual(age)
         }
     }
+})
+
+test('datepicker', async({page}) => {
+    await page.getByText('Forms').click()
+    await page.getByText('Datepicker').click()
+
+    const calendarInputField = page.getByPlaceholder('Form Picker')
+    await calendarInputField.click()
+
+    let date = new Date()
+    date.setDate(date.getDate() + 365)
+    const expectedDateDay = date.getDate().toString()
+    const expectedShortMonth = date.toLocaleString('En-US', {month: 'short'})
+    const expectedLongMonth = date.toLocaleString('En-US', {month: 'long'})
+    const expectedYear = date.getFullYear()
+    const dateToAssert = `${expectedShortMonth} ${expectedDateDay}, ${expectedYear}`
+
+    let calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent() ?? ''
+    const expectedMonthAndYear = `${expectedLongMonth} ${expectedYear}`
+
+    while(!calendarMonthAndYear.includes(expectedMonthAndYear)){
+        await page.locator('nb-calendar-pageable-navigation [data-name="chevron-right"]').click()
+        calendarMonthAndYear = await page.locator('nb-calendar-view-mode').textContent() ?? ''
+    }
+
+    await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDateDay, {exact: true}).click()
+    await expect(calendarInputField).toHaveValue(dateToAssert)
 })
