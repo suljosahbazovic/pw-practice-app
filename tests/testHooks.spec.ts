@@ -6,7 +6,7 @@ test.beforeEach(async ({ page }) => {
 
 test.describe('suite1', () => {
   test.beforeEach(async ({ page }) => {
-    await page.getByText('Charts').click();
+    await page.getByText('Charts', {exact: true}).click()
     //await page.pause(); // Pauses the test execution and opens the Playwright Inspector for debugging.
   })
   test('the first test', async ({ page }) => {
