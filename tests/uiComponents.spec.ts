@@ -109,7 +109,6 @@ test('tooltips', async ({page}) => {
     expect(tooltip).toEqual('This is a tooltip')
 })
 
-
 test('dialog box', async ({page}) => {
     await page.getByText('Tables & Data').click()
     await page.getByText('Smart Table').click()
