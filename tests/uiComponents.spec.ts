@@ -193,3 +193,31 @@ test('datepicker', async({page}) => {
     await page.locator('[class="day-cell ng-star-inserted"]').getByText(expectedDateDay, {exact: true}).click()
     await expect(calendarInputField).toHaveValue(dateToAssert)
 })
+
+test('sliders', async({page}) => {
+    await page.getByText('IoT Dashboard').click()
+
+    //1 Update attribute
+    const tempgauge = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger circle')
+    await tempgauge.evaluate( node => {
+        node.setAttribute('cx', '232.630')
+        node.setAttribute('cy', '232.630')
+    })
+    await tempgauge.click()
+    await expect(page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')).toContainText('30');
+
+    //2 Mouse movement
+    const tempBox = page.locator('[tabtitle="Temperature"] ngx-temperature-dragger')
+    await tempBox.scrollIntoViewIfNeeded()
+
+    const box = await tempBox.boundingBox()
+    if (!box) throw new Error('Could not determine bounding box for temperature dragger')
+    const x = box.x + box.width / 2
+    const y = box.y + box.height / 2
+    await page.mouse.move(x, y)
+    await page.mouse.down()
+    await page.mouse.move(x + 100, y)
+    await page.mouse.move(x + 100, y + 100)
+    await page.mouse.up()
+    await expect(tempBox).toContainText('30')
+})
