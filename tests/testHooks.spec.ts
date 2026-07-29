@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/')
 })
 
-test.describe.only('suite1', () => {
+test.describe('suite1', () => {
   test.beforeEach(async ({ page }) => {
     await page.getByText('Forms', {exact: true}).click()
     //await page.pause(); // Pauses the test execution and opens the Playwright Inspector for debugging.
