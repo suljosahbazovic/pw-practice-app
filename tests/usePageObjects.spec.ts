@@ -27,7 +27,13 @@ test('parametrized methods', async ({ page }) => {
   // console.log(buffer.toString('base64'))
   await pm.onFormLayoutsPage().submitInlineFormWithNameEmailAndCheckBox(randomFullName, randomEmail, false)
   // await page.locator('nb-card', { hasText: 'Inline form' }).screenshot({ path: 'screenshots/inlineForm.png' });
-  // await pm.navigateTo().datepickerPage()
-  // await pm.onDatePickerPage().selectCommonDatePickerDateFromToday(5)
-  // await pm.onDatePickerPage().selectDatePickerWithRangeFromToday(6, 10)
+  await pm.navigateTo().datepickerPage()
+  await pm.onDatePickerPage().selectCommonDatePickerDateFromToday(5)
+  await pm.onDatePickerPage().selectDatePickerWithRangeFromToday(6, 10)
+})
+
+test.only('testing with argos ci', async ({ page }) => {
+  const pm = new PageManager(page)
+  await pm.navigateTo().formLayoutsPage()
+  await pm.navigateTo().datepickerPage()
 })
