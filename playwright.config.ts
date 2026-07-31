@@ -12,7 +12,12 @@ export default defineConfig<TestOptions>({
   },
 
   retries: 1,
-  reporter: 'html',
+  reporter: [
+    ['html']
+    //['json', {outputFile: 'test-results/jsonReport.json'}],
+    //['allure-playwright']
+  ],
+
 
   use: {
     //baseURL: 'http://localhost:4200/',
@@ -59,6 +64,13 @@ export default defineConfig<TestOptions>({
       testMatch: 'usePageObjects.spec.ts',
       use: { 
         viewport: {width: 1920, height: 1080}
+      },
+    },
+    {
+      name: 'mobile',
+      testMatch: 'testMobile.spec.ts',
+      use: { 
+        ...devices['iPhone 13 Pro']
       },
     },
   ],
